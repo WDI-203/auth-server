@@ -12,7 +12,6 @@ const jwtMiddleware = async (req, res, next) => {
 				next();
 			}
 		}
-		res.json({ token: req.headers.authorization });
 	} catch (error) {
 		console.log(error);
 		res.status(401).json({ success: false, message: "error", error: error });

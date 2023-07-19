@@ -72,7 +72,7 @@ const validateUser = async (req, res) => {
 				.status(400)
 				.json({ success: false, message: "User not found" });
 		}
-		res.status(200).json({ success: true, email: findUser.email });
+		res.status(200).json({ success: true, email: foundUser.email });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ success: false, message: error.message });

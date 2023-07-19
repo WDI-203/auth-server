@@ -40,16 +40,19 @@ const login = async (req, res) => {
 		if (!user) {
 			return res.status(401).json({
 				success: false,
-				message: " User and Password does not match ",
+				message: "Error",
+				error: { email: "User and Password does not match" },
 			});
 		}
 		//.compare compares the password coming in from the client and the found user's hashed password to see if they match
 		const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
 
 		if (!isPasswordValid) {
-			return res
-				.status(401)
-				.json({ success: false, message: " User and Password does not match" });
+			return res.status(401).json({
+				success: false,
+				message: "Error",
+				error: { email: "User and Password does not match" },
+			});
 		}
 
 		const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
@@ -59,7 +62,9 @@ const login = async (req, res) => {
 		res.status(200).json({ success: true, token: token });
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({ success: false, message: error.message });
+		res
+			.status(500)
+			.json({ success: false, message: error.message, error: error });
 	}
 };
 
